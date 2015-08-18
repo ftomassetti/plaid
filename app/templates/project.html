@@ -116,7 +116,7 @@
             var newState = $( "#states option:selected" )[0].value;
             if (values.length > 0 && newState.length > 0) {
                 var valuesStr = values.join(',');
-                $('<form action="bulk_patch_state" method="POST">' +
+                $('<form action="bulk_change_state" method="POST">' +
                     '<input type="hidden" name="patches" value="' + valuesStr + '">' +
                     '<input type="hidden" name="new_state" value="' + newState + '">' +
                     '</form>').submit();
