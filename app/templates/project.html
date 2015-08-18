@@ -82,6 +82,7 @@
                     <option value="A" >accepted</option>
                     <option value="R" >rejected</option>
                 </select>
+                <a href="#" id="bulk_apply">apply</a>
             </td></tr>
             <tr>
                 <th></th>
@@ -108,6 +109,20 @@
         </table>
     </div>
     {% endif %}
+    <script>
+        $("#bulk_apply").click(function() {
+            var selected=$('.patch-checkbox').filter(function(i){return $('.patch-checkbox')[i].checked;});
+            var values=$.map(selected, function(el, i){return el.value;});
+            var newState = $( "#states option:selected" )[0].value;
+            if (values.length > 0 && newState.length > 0) {
+                var valuesStr = values.join(',');
+                $('<form action="bulk_patch_state" method="POST">' +
+                    '<input type="hidden" name="patches" value="' + valuesStr + '">' +
+                    '<input type="hidden" name="new_state" value="' + newState + '">' +
+                    '</form>').submit();
+            }
+        });
+    </script>
 {% endmacro %}
 
 {{ patch_panel('danger', "Stale Patches", "stale", 10) }}
