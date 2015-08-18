@@ -34,6 +34,7 @@
 
 {%- macro patch_row_tiny(patch) -%}
     <tr>
+        <td><input type="checkbox" class="patch-checkbox" name="patch" value="{{ patch.id }}"></td>
         <td>
             {{ render_tags(patch.tags, patch.project) }}
             <a href="{{url_for('patch.index', patch_id=patch.id)}}">

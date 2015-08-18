@@ -74,8 +74,20 @@
         <div class="panel-heading">{{heading}}</div>
         <table class="table table-striped">
         <thead>
+            <tr><td colspan="4"><a href="javascript:$('.patch-checkbox').prop('checked', true);">select all</a> - <a href="javascript:$('.patch-checkbox').prop('checked', false);">clear</a> -
+                <select id="states" name="new_state">
+                    <option value='' ></option>
+                    <option value='U' >unreviewed</option>
+                    <option value="C" >commented</option>
+                    <option value="A" >accepted</option>
+                    <option value="R" >rejected</option>
+                </select>
+            </td></tr>
             <tr>
-                <th>Patch</th><th>Date</th><th>State</th>
+                <th></th>
+                <th>Patch</th>
+                <th>Date</th>
+                <th>State</th>
             </tr>
         </thead>
         <tbody>
