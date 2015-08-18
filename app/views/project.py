@@ -86,7 +86,7 @@ def tag(tag_name, page=1):
 
 @bp.route('/bulk_change_state', methods=['POST'])
 @roles_accepted('admin', 'committer')
-def change_state():
+def bulk_change_state():
     new_state_str = request.form['new_state']
     new_state = PatchState.from_string(new_state_str)
     patches_ids_str = request.form['patches']
@@ -95,7 +95,7 @@ def change_state():
         for p in Patch.query.filter_by(id=id):
             p.state = new_state
     db.session.commit()
-    return redirect(url_for('project.index'))
+    return redirect(request.referrer)
 
 @bp.route('/series/<series_id>')
 @bp.route('/series/<series_id>/<int:page>')
