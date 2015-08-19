@@ -24,6 +24,20 @@ from app import models
 from app import render
 from app import views
 
+from flask_admin import Admin
+from flask_admin.contrib.sqla import ModelView
+from app.models import User, Patch, Role, Submitter, Project, Comment, Series, Topic, Tag
+
+admin = Admin(app, name='plaid')
+admin.add_view(ModelView(User, db.session))
+admin.add_view(ModelView(Role, db.session))
+admin.add_view(ModelView(Patch, db.session))
+admin.add_view(ModelView(Submitter, db.session))
+admin.add_view(ModelView(Project, db.session))
+admin.add_view(ModelView(Comment, db.session))
+admin.add_view(ModelView(Series, db.session))
+admin.add_view(ModelView(Topic, db.session))
+admin.add_view(ModelView(Tag, db.session))
 
 user_datastore = SQLAlchemyUserDatastore(db, models.User, models.Role)
 security = Security(app, user_datastore,

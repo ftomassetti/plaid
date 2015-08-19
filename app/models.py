@@ -24,6 +24,7 @@ class Role(RoleMixin, db.Model):
     name = db.Column(db.String(80), unique=True)
     description = db.Column(db.String(255))
 
+
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     active = db.Column(db.Boolean(), nullable=False, default=False)
