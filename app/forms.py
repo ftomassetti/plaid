@@ -2,8 +2,7 @@ from wtforms import fields
 from wtforms import form
 from wtforms import validators
 
-from flask.ext.security import RegisterForm
-
+from flask.ext.security import RegisterForm, current_user
 
 class ExtendedRegisterForm(RegisterForm):
     name = fields.TextField('Full Name', [validators.Required()])
