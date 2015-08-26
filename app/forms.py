@@ -38,6 +38,7 @@ class GitHubRegistrationForm(form.Form):
     confirm = fields.PasswordField('Repeat Password')
     submit = fields.SubmitField('Apply')
     name = fields.TextField('Name', [validators.Required()])
+    github_username = fields.TextField('GitHub username', [validators.Required()])
     email = fields.TextField('email', [validators.Required()])
 
     def validate_confirm(self, field):
