@@ -33,7 +33,7 @@
 
 {%- macro patches_bulk_table_line(current_user) -%}
 {% if current_user.has_role('committer') or current_user.has_role('admin') %}
-<tr><td colspan="4"><a href="javascript:$('.patch-checkbox').prop('checked', true);">select all</a> - <a href="javascript:$('.patch-checkbox').prop('checked', false);">clear</a> -
+<tr><td colspan="4"><a href="#" id="select_all">select all</a> - <a href="#" id="clear_all">clear</a> -
     <select id="states" name="new_state">
         <option value='' ></option>
         <option value='U' >unreviewed</option>
@@ -67,7 +67,12 @@
     }
 
     var prepareBulkApply = function() {
-        console.log("RNR");
+        $("#select_all").click(function() {
+            $('.patch-checkbox').prop('checked', true);
+        });
+        $("#clear_all").click(function() {
+            $('.patch-checkbox').prop('checked', false);
+        });
         $("#bulk_apply").click(function() {
             var selected=$('.patch-checkbox').filter(function(i){return $('.patch-checkbox')[i].checked;});
             var values=$.map(selected, function(el, i){return el.value;});
