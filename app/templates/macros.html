@@ -48,18 +48,42 @@
 
 {%- macro patches_bulk_script() -%}
 <script>
-    $("#bulk_apply").click(function() {
-        var selected=$('.patch-checkbox').filter(function(i){return $('.patch-checkbox')[i].checked;});
-        var values=$.map(selected, function(el, i){return el.value;});
-        var newState = $( "#states option:selected" )[0].value;
-        if (values.length > 0 && newState.length > 0) {
-            var valuesStr = values.join(',');
-            $('<form action="{{ url_for('project.bulk_change_state') }}" method="POST">' +
-                '<input type="hidden" name="patches" value="' + valuesStr + '">' +
-                '<input type="hidden" name="new_state" value="' + newState + '">' +
-                '</form>').submit();
+
+    function myPluginLoadEvent(func) {
+        // assign any pre-defined functions on 'window.onload' to a variable
+        var oldOnLoad = window.onload;
+        // if there is not any function hooked to it
+        if (typeof window.onload != 'function') {
+            // you can hook your function with it
+            window.onload = func
+        } else { // someone already hooked a function
+            window.onload = function () {
+                // call the function hooked already
+                oldOnLoad();
+                // call your awesome function
+                func();
+            }
         }
-    });
+    }
+
+    var prepareBulkApply = function() {
+        console.log("RNR");
+        $("#bulk_apply").click(function() {
+            var selected=$('.patch-checkbox').filter(function(i){return $('.patch-checkbox')[i].checked;});
+            var values=$.map(selected, function(el, i){return el.value;});
+            var newState = $( "#states option:selected" )[0].value;
+            if (values.length > 0 && newState.length > 0) {
+                var valuesStr = values.join(',');
+                // we need to add it to the DOM or firefox complains
+                $('<form style="display:hidden" action="{{ url_for('project.bulk_change_state') }}" method="POST">' +
+                    '<input type="hidden" name="patches" value="' + valuesStr + '">' +
+                    '<input type="hidden" name="new_state" value="' + newState + '">' +
+                    '</form>').appendTo("body").submit();
+            }
+        });
+    }
+
+    myPluginLoadEvent(prepareBulkApply);
 </script>
 {% endmacro %}
 
