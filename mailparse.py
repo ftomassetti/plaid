@@ -240,6 +240,7 @@ def parse_from_header(from_header):
 
     return (name, email)
 
+
 class HeaderParser(object):
     list_id_headers = ['List-ID', 'X-Mailing-List', 'X-list', 'To', 'CC']
     listid_res = [re.compile('.*<([^>]+)>.*', re.S),
