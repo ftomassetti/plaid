@@ -90,3 +90,9 @@ class TestParser(unittest.TestCase):
     def test_parse_from_header_with_non_ascii_characters(self):
         self.assertEqual(("Alexandra Hájková", "alexandra.khirnova at gmail.com"), parse_from_header("alexandra.khirnova at gmail.com (=?UTF-8?q?Alexandra=20H=C3=A1jkov=C3=A1?=)"))
         self.assertEqual(("Arttu Ylä-Outinen", "arttu.yla-outinen at tut.fi"), parse_from_header("arttu.yla-outinen at tut.fi (=?UTF-8?Q?Arttu_Yl=c3=a4-Outinen?=)"))
+
+    def test_derive_tag_names_with_square_brackets(self):
+        subject_parser = SubjectParser("[PATCH] lavu: Deprecate AVFrame.error[]", [""])
+        self.assertEqual(['lavu'], subject_parser.tags)
+        self.assertEqual('Deprecate AVFrame.error[]', subject_parser.name)
+        self.assertEqual('lavu: Deprecate AVFrame.error[]', subject_parser.subject)
