@@ -11,3 +11,11 @@
         margin: 7px 10px;
     }
 }
+
+.left_panel {
+    float: left;
+}
+
+.right_panel {
+    margin-left: 53%;
+}
