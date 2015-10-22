@@ -106,7 +106,7 @@
             </a>
         </td>
         <td>
-            {{ patch.date }}
+            {{ patch.date.strftime('%Y-%m-%d') }}
         </td>
         <td>
             {{ render_patch_state(patch) }}
