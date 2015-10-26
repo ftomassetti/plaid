@@ -35,7 +35,8 @@ def add_project(endpoint, values):
 @bp.route('/')
 def index():
     return render_template('project.html',
-                           title="Project %s" % g.project.name)
+                           title="Project %s" % g.project.name,
+                           project_name=g.project.name)
 
 
 @bp.route('/patches/')
@@ -54,7 +55,8 @@ def patches(group=None):
 
     return dict(title="Project %s" % g.project.name,
                 query=patches,
-                group=group)
+                group=group,
+                project_name=g.project.name)
 
 
 @bp.route('/tag/')
@@ -62,7 +64,8 @@ def tags():
     tags = g.project.tags
     return render_template('tags.html',
                            title="All tags",
-                           tags=tags)
+                           tags=tags,
+                           project_name=g.project.name)
 
 
 @bp.route('/tag/<tag_name>')
@@ -82,7 +85,8 @@ def tag(tag_name, page=1):
 
     return dict(title="Tag %s" % tag.name,
                 query=patches,
-                tag=tag)
+                tag=tag,
+                project_name=g.project.name)
 
 @bp.route('/bulk_change_state', methods=['POST'])
 @roles_accepted('admin', 'committer')

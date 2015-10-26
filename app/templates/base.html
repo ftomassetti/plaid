@@ -33,6 +33,9 @@
                         </ul>
                     </li>
                     {% else %}
+                    {% if project_name: %}
+                        <li><a href="/{{ project_name }}/search"><span class="glyphicon glyphicon-search icons-padding"></span> Search</a></li>
+                    {% endif %}
                     <li><a href="/login"><span class="glyphicon glyphicon-log-in icons-padding"></span> Login</a></li>
                     <li><a href="/register"><span class="glyphicon glyphicon-edit icons-padding"></span> Register</a></li>
                     <li><a href="{{ url_for('login_with_github') }}"><span class="octicon octicon-mark-github"></span> Login with Github</a></li>

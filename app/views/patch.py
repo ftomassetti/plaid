@@ -45,11 +45,13 @@ def index():
                                patch=g.patch,
                                series=series,
                                page=page,
-                               endpoint=endpoint)
+                               endpoint=endpoint,
+                               project_name=g.patch.project.name)
     else:
         return render_template('patch.html',
                                user=login.current_user,
-                               patch=g.patch)
+                               patch=g.patch,
+                               project_name=g.patch.project.name)
 
 
 @bp.route('/change_state/', methods=['POST'])
