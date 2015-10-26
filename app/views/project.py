@@ -13,7 +13,7 @@ from StringIO import StringIO
 from app.models import Patch, PatchState
 from app.views.decorators import paginable, render, filterable
 from app import db
-
+import json
 
 bp = Blueprint('project', __name__, url_prefix='/project/<project_name>')
 
@@ -37,6 +37,49 @@ def index():
     return render_template('project.html',
                            title="Project %s" % g.project.name,
                            project_name=g.project.name)
+
+@bp.route('/search')
+def search():
+    return render_template('search.html',
+                           title="Project %s" % g.project.name,
+                           project_name=g.project.name)
+
+
+def terms_in_string(terms, s):
+    if not s:
+        return False
+    for t in terms:
+        if t in s:
+            return True
+    return False
+
+
+def terms_in_patch(terms, p):
+    selected = False
+    selected = selected or terms_in_string(terms, p.submitter.name)
+    selected = selected or terms_in_string(terms, p.submitter.email)
+    selected = selected or terms_in_string(terms, p.name)
+    for c in p.comments:
+        selected = selected or terms_in_string(terms, c.name)
+        selected = selected or terms_in_string(terms, c.content)
+    return selected
+
+
+def patch_as_data(p):
+    return {
+        'id': p.id,
+        'name': p.name,
+        'tags': [t.name for t in p.tags],
+        'state': p.state.name
+    }
+
+
+@bp.route('/search-query')
+def search_query():
+    terms = [t for t in request.args.get('terms').split(" ") if len(t) > 0]
+    data = [patch_as_data(p) for p in Patch.query.filter_by(project=g.project).all() if terms_in_patch(terms, p)]
+    return Response(json.dumps(data),
+                    mimetype='application/json')
 
 
 @bp.route('/patches/')

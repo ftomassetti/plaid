@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% from "macros.html" import render_item, render_status, render_tag, patch_row_tiny, patches_bulk_script, patches_bulk_table_line %}
+
+{% block breadcrumb %}
+<li>{{ g.project.name }}</li>
+{% endblock %}
+
+{% block content %}
+
+<div class="">
+    <div>
+          <span>Search:</span>
+          <input id="searched-terms">
+          <a id="search-go" href="javascript:search()">Go!</a>
+          <script>
+
+              function capitalize(string) {
+                var tempstr = string.toLowerCase();
+                return tempstr.replace(tempstr[0], tempstr[0].toUpperCase());
+              }
+
+              function badge_type(state) {
+                if (state === 'unreviewed') {
+                    return 'alert-info';
+                } else if (state === 'accepted' || state === 'rejected') {
+                    return 'alert-success';
+                } else if (state === 'comments') {
+                    return 'alert-warning';
+                } else if (state === 'unreviewed') {
+                    return 'alert-danger';
+                }
+              }
+
+              function search() {
+                var terms = $("#searched-terms").val();
+                $.ajax({
+                  url: "/project/{{ project_name }}/search-query?terms=" + terms,
+                }).done(function(data) {
+                  console.log("OK " + data.length);
+                  $("#count").text(data.length);
+                  $("#results").empty();
+                  $.each(data, function(i, el) {
+                    //console.log(el);
+                    $("#results").append($('<tr></tr>'));
+                    var tags = '';
+                    $.each(el.tags, function(i, tag) {
+                        tags = tags + '<a class="btn btn-xs btn-info" href="/project/libav/tag/' + tag + '">' + tag + '</a>';
+                    });
+                    $("#results tr:last").append('<td> ' + tags + '<a href="/patch/' + el.id + '/">' + el.name + '</td>');
+                    $("#results tr:last").append('<td><span class="badge ' + badge_type(el.state) + '">' + capitalize(el.state) + '</span></td>');
+                  });
+                });
+              }
+          </script>
+    </div>
+    <br/>
+    <div class="panel panel-primary">
+        <div class="panel-heading">Results (<span id="count">0</span> found)</div>
+        <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Patch</th>
+                <th>State</th>
+            </tr>
+        </thead>
+        <tbody id="results">
+        </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}
