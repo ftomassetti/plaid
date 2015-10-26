@@ -2,6 +2,7 @@ from functools import wraps
 from flask import render_template, request, url_for
 from app.models import PatchState
 
+
 def filterable(f):
     """Filter a query"""
     @wraps(f)
